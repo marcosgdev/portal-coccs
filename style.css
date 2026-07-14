@@ -330,19 +330,19 @@
   /* ---------- Sections generic ---------- */
   section{ padding: 92px 0; }
   section.alt{ background: rgba(31,78,121,0.055); }
-  .section-head{ max-width: 62ch; margin-bottom: 48px; position:relative; padding-top:30px; }
+  .section-head{ max-width: 62ch; margin-bottom: 48px; position:relative; padding-top:34px; }
   .section-head[data-num]::before{
     content: attr(data-num);
     position:absolute; top:0; left:0;
-    font-family: var(--font-mono); font-size:0.74rem; font-weight:700;
+    font-family: var(--font-mono); font-size:0.92rem; font-weight:700;
     letter-spacing:0.14em; color: var(--dourado);
     text-shadow: 0 0 16px rgba(242,183,5,0.45);
   }
   .section-head[data-num]::after{
-    content:""; position:absolute; top:22px; left:0; width:36px; height:2px; background: var(--dourado);
+    content:""; position:absolute; top:26px; left:0; width:36px; height:2px; background: var(--dourado);
   }
   .section-head .eyebrow{
-    font-family: var(--font-mono); font-size:0.74rem; letter-spacing:0.12em; text-transform:uppercase;
+    font-family: var(--font-mono); font-size:0.86rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase;
     color: var(--azul-principal); display:block; margin-bottom:10px;
   }
   .section-head h2{ font-size: clamp(1.5rem, 2.4vw, 2rem); color: var(--azul); }

@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fluxograma — Dispensa de Licitação · TJPA</title>
+<style>
+  :root {
+    --blue:       #1a56db;
+    --blue-light: #3b82f6;
+    --blue-dark:  #1e3a5f;
+    --green:      #059669;
+    --green-light:#10b981;
+    --green-dark: #064e3b;
+    --bg:         #f1f5f9;
+    --card-bg:    #ffffff;
+    --line:       #cbd5e1;
+    --text:       #1e293b;
+    --muted:      #64748b;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 0 0 80px;
+  }
+
+  /* ---- Hero ---- */
+  .hero {
+    background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 60%, #1a4731 100%);
+    padding: 48px 24px 56px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+  .hero-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: rgba(255,255,255,0.8);
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    padding: 5px 16px;
+    border-radius: 999px;
+    margin-bottom: 16px;
+  }
+  .hero h1 {
+    color: #fff;
+    font-size: clamp(18px, 3vw, 26px);
+    font-weight: 800;
+    letter-spacing: -0.3px;
+    margin-bottom: 8px;
+  }
+  .hero p {
+    color: rgba(255,255,255,0.6);
+    font-size: 15px;
+  }
+
+  /* ---- Layout ---- */
+  .content {
+    max-width: 1200px;
+    margin: -20px auto 0;
+    padding: 0 20px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ---- Phase block ---- */
+  .phase-block {
+    margin-bottom: 28px;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+  }
+
+  .phase-head {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 18px 28px;
+    color: #fff;
+  }
+  .phase-head.blue-head { background: linear-gradient(90deg, #1e3a5f, #1a56db); }
+  .phase-head.green-head { background: linear-gradient(90deg, #064e3b, #059669); }
+
+  .phase-icon-wrap {
+    width: 40px; height: 40px;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.15);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .phase-head-text h2 {
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+  }
+  .phase-head-text p {
+    font-size: 12px;
+    opacity: 0.7;
+    margin-top: 1px;
+  }
+  .phase-badge {
+    margin-left: auto;
+    background: rgba(255,255,255,0.2);
+    font-size: 12px;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 999px;
+  }
+
+  .phase-body {
+    background: var(--card-bg);
+    padding: 32px 28px 28px;
+  }
+
+  /* ---- Flow rows ---- */
+  .flow-row {
+    display: flex;
+    align-items: center;
+    gap: 0;
+  }
+
+  /* ---- Step node ---- */
+  .step-node {
+    flex: 1;
+    min-width: 0;
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+    position: relative;
+  }
+  .step-node.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .step-card {
+    background: var(--card-bg);
+    border: 1.5px solid #e2e8f0;
+    border-radius: 14px;
+    padding: 16px 14px 13px;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    position: relative;
+    overflow: hidden;
+    text-align: left;
+    width: 100%;
+    min-height: 120px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .step-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    border-radius: 14px 14px 0 0;
+    background: var(--accent-color, #1a56db);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease;
+  }
+  .step-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.12);
+    border-color: var(--accent-color, #1a56db);
+  }
+  .step-card:hover::before {
+    transform: scaleX(1);
+  }
+
+  .card-num {
+    width: 26px; height: 26px;
+    border-radius: 8px;
+    background: var(--accent-color, #1a56db);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 800;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .card-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .card-title {
+    font-size: 12.5px;
+    font-weight: 700;
+    line-height: 1.4;
+    color: var(--text);
+    flex: 1;
+  }
+
+  .card-resp {
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 7px 9px;
+    margin-top: auto;
+  }
+  .card-resp-icon {
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    background: var(--accent-color, #1a56db);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .card-resp-icon svg {
+    width: 9px; height: 9px;
+    fill: white;
+  }
+  .card-resp-name {
+    font-size: 10.5px;
+    color: var(--muted);
+    font-weight: 600;
+    line-height: 1.3;
+  }
+
+  /* ---- Connectors ---- */
+  .arrow-h {
+    flex: 0 0 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--line);
+    padding: 0 2px;
+    flex-shrink: 0;
+  }
+  .arrow-h svg { width: 20px; height: 14px; }
+
+  /* Row turn connector */
+  .row-turn {
+    height: 48px;
+    position: relative;
+    margin: 0;
+  }
+  .row-turn.turn-right::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: calc(10% + 12px);
+    height: 100%;
+    background: transparent;
+    border-right: 2px solid var(--line);
+    border-bottom: 2px solid var(--line);
+    border-radius: 0 0 8px 0;
+  }
+  .row-turn.turn-right::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    bottom: -1px;
+    width: calc(90% - 12px);
+    height: 2px;
+    background: var(--line);
+  }
+  .row-turn.turn-left::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: calc(10% + 12px);
+    height: 100%;
+    background: transparent;
+    border-left: 2px solid var(--line);
+    border-bottom: 2px solid var(--line);
+    border-radius: 0 0 0 8px;
+  }
+  .row-turn.turn-left::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -1px;
+    width: calc(50% - 12px);
+    height: 2px;
+    background: var(--line);
+  }
+
+  /* Phase divider between interna e externa */
+  .phase-divider {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 32px 0 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  .phase-divider-line { flex: 1; height: 1px; background: #e2e8f0; }
+  .phase-divider-icon {
+    width: 40px; height: 40px;
+    background: white;
+    border: 2px solid #e2e8f0;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--muted);
+    font-size: 18px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  }
+
+  /* ---- Drawer ---- */
+  .overlay {
+    position: fixed; inset: 0;
+    background: rgba(15, 23, 42, 0.5);
+    backdrop-filter: blur(4px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    z-index: 200;
+  }
+  .overlay.show { opacity: 1; pointer-events: auto; }
+
+  .drawer {
+    position: fixed;
+    top: 0; right: 0;
+    width: min(460px, 95vw);
+    height: 100%;
+    background: #fff;
+    z-index: 300;
+    display: flex;
+    flex-direction: column;
+    transform: translateX(100%);
+    transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1);
+    box-shadow: -20px 0 60px rgba(0,0,0,0.15);
+  }
+  .drawer.open { transform: translateX(0); }
+
+  .drawer-top {
+    padding: 28px 28px 24px;
+    position: relative;
+    flex-shrink: 0;
+  }
+  .drawer-top.blue { background: linear-gradient(135deg, #0f2c54, #1a56db); }
+  .drawer-top.green { background: linear-gradient(135deg, #064e3b, #059669); }
+
+  .drawer-close {
+    position: absolute;
+    top: 20px; right: 20px;
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.15);
+    border: none;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.2s;
+  }
+  .drawer-close:hover { background: rgba(255,255,255,0.25); }
+
+  .drawer-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255,255,255,0.15);
+    color: rgba(255,255,255,0.9);
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 4px 12px;
+    border-radius: 999px;
+    margin-bottom: 12px;
+  }
+  .drawer-h { color: #fff; font-size: 20px; font-weight: 800; line-height: 1.3; }
+
+  .drawer-scroll {
+    flex: 1;
+    overflow-y: auto;
+    padding: 24px 28px 40px;
+  }
+
+  .info-card {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 16px 18px;
+    margin-bottom: 20px;
+  }
+  .info-card-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-weight: 800;
+    color: var(--muted);
+    margin-bottom: 6px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .info-card-label::before {
+    content: '';
+    width: 3px; height: 12px;
+    border-radius: 2px;
+    background: var(--accent-color, #1a56db);
+    display: block;
+  }
+  .info-card-val {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .desc-section h4 {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-weight: 800;
+    color: var(--muted);
+    margin-bottom: 10px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .desc-section h4::before {
+    content: '';
+    width: 3px; height: 12px;
+    border-radius: 2px;
+    background: var(--accent-color, #1a56db);
+    display: block;
+  }
+  .desc-section p {
+    font-size: 14px;
+    line-height: 1.75;
+    color: #475569;
+  }
+
+  .tip-hint {
+    text-align: center;
+    font-size: 12px;
+    color: var(--muted);
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-badge">Tribunal de Justiça do Estado do Pará</div>
+  <h1>Fluxograma — Processo de Dispensa de Licitação</h1>
+  <p>Clique em qualquer etapa para ver detalhes e o responsável</p>
+</div>
+
+<div class="content">
+
+  <div class="phase-block" id="block-interna">
+    <div class="phase-head blue-head">
+      <div class="phase-icon-wrap">📋</div>
+      <div class="phase-head-text">
+        <h2>Fase Interna</h2>
+        <p>Planejamento e Instrução do Processo</p>
+      </div>
+      <div class="phase-badge">12 etapas</div>
+    </div>
+    <div class="phase-body" id="flow-interna"></div>
+  </div>
+
+  <div class="phase-divider">
+    <div class="phase-divider-line"></div>
+    <div class="phase-divider-icon">↓</div>
+    <div class="phase-divider-line"></div>
+  </div>
+
+  <div class="phase-block" id="block-externa">
+    <div class="phase-head green-head">
+      <div class="phase-icon-wrap">⚖️</div>
+      <div class="phase-head-text">
+        <h2>Fase Externa</h2>
+        <p>Julgamento e Contratação</p>
+      </div>
+      <div class="phase-badge">4 etapas</div>
+    </div>
+    <div class="phase-body" id="flow-externa"></div>
+  </div>
+
+</div>
+
+<div class="overlay" id="overlay" onclick="closeDrawer()"></div>
+
+<div class="drawer" id="drawer">
+  <div class="drawer-top blue" id="drawer-top">
+    <button class="drawer-close" onclick="closeDrawer()">✕</button>
+    <div class="drawer-tag" id="d-tag">Etapa 1</div>
+    <div class="drawer-h" id="d-title">Título</div>
+  </div>
+  <div class="drawer-scroll">
+    <div class="info-card" id="d-resp-card" style="--accent-color:#1a56db">
+      <div class="info-card-label">Responsável pela Etapa</div>
+      <div class="info-card-val" id="d-resp"></div>
+    </div>
+    <div class="desc-section" id="d-desc-section" style="--accent-color:#1a56db">
+      <h4>Descrição / Procedimento</h4>
+      <p id="d-desc"></p>
+    </div>
+  </div>
+</div>
+
+<script>
+const STEPS = [
+  { id:1,  phase:'interna', title:'Elaboração do DOD',                    resp:'Unidade Requisitante',                                          desc:'Início do processo com a confecção do Documento de Formalização da Demanda pela unidade que necessita do objeto.' },
+  { id:2,  phase:'interna', title:'Designação da Equipe',                 resp:'Secretário de Administração',                                   desc:'Ato formal de indicação e designação dos servidores que irão compor a equipe de planejamento da contratação.' },
+  { id:3,  phase:'interna', title:'ETP e Mapa de Risco',                  resp:'Unidade Requisitante',                                          desc:'Estudos Técnicos Preliminares com levantamento do orçamento prévio e mapeamento de riscos envolvidos (se necessário).' },
+  { id:4,  phase:'interna', title:'Aprovação ETP e Mapa de Risco',        resp:'Autoridade Competente',                                         desc:'Avaliação técnica e jurídica e posterior validação/aprovação formal das matrizes de risco e ETP.' },
+  { id:5,  phase:'interna', title:'Versão Inicial do TR e Minutas',       resp:'Unidade Requisitante',                                          desc:'Elaboração da primeira versão do Termo de Referência, das minutas do contrato e/ou ata e da SD com o orçamento preliminar balizado.' },
+  { id:6,  phase:'interna', title:'Pesquisa de Preços',                   resp:'Gerência de Análise de Preços',                                 desc:'Ampla pesquisa de mercado e posterior emissão do Relatório de Competitividade.' },
+  { id:7,  phase:'interna', title:'Validação da Pesquisa',                resp:'Unidade Requisitante',                                          desc:'Análise, validação formal do resultado da pesquisa de preços realizada e finalização definitiva da SD.' },
+  { id:8,  phase:'interna', title:'Orçamento',                            resp:'SEPLAN',                                                        desc:'Verificação e emissão de Declaração de Disponibilidade Orçamentária e respectiva Validação da Solicitação de Despesa (SD).' },
+  { id:9,  phase:'interna', title:'Versão Final TR e Minutas',            resp:'Unidade Requisitante',                                          desc:'Ajustes finais e finalização do TR, das minutas e anexação obrigatória das versões editáveis para análise posterior.' },
+  { id:10, phase:'interna', title:'Elaboração da Minuta do Aviso',        resp:'Gerência de Análise de Preços',                                 desc:'Confecção da minuta do Aviso de Dispensa de Licitação que será submetido e publicado.' },
+  { id:11, phase:'interna', title:'Parecer Jurídico',                     resp:'Assessoria Jurídica SEADM',                                     desc:'Análise legal e emissão de parecer de regularidade jurídica sobre a contratação direta por dispensa.' },
+  { id:12, phase:'interna', title:'Acolhimento do Parecer e Autorização', resp:'Secretário de Administração',                                   desc:'Aprovação dos termos jurídicos e assinatura da autorização de prosseguimento da dispensa.' },
+  { id:13, phase:'externa', title:'Fase Externa',                         resp:'Divisão de Seleção de Fornecedores',                            desc:'Publicação oficial do Aviso de Dispensa no sistema e condução ativa da sessão de lances/propostas.' },
+  { id:14, phase:'externa', title:'Adjudicação e Homologação ComprasGov', resp:'Secretário de Administração',                                   desc:'Aceite final do objeto ao vencedor da disputa e homologação do resultado no sistema ComprasGov.' },
+  { id:15, phase:'externa', title:'Publicação da Homologação',            resp:'Divisão de Seleção de Fornecedores',                            desc:'Inserção do ato homologatório na imprensa oficial ou no Portal Nacional de Contratações Públicas (PNCP).' },
+  { id:16, phase:'externa', title:'Elaboração de Contrato e/ou ARP',      resp:'Coordenadoria de Planejamento e Gestão de Contratações e Convênios', desc:'Formalização final do ajuste, lavratura do termo de contrato ou da Ata de Registro de Preços.' },
+];
+
+const arrowSvg = (dir) => `
+  <svg viewBox="0 0 20 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+    ${dir === 'right'
+      ? '<path d="M1 7h16M13 2l6 5-6 5" stroke="#cbd5e1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>'
+      : '<path d="M19 7H3M7 2L1 7l6 5" stroke="#cbd5e1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>'}
+  </svg>`;
+
+const personSvg = `<svg viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg"><circle cx="5" cy="3" r="2" fill="white"/><path d="M1 9c0-2.2 1.8-4 4-4s4 1.8 4 4" fill="white"/></svg>`;
+
+function renderFlow(phaseSteps, containerId, accent) {
+  const container = document.getElementById(containerId);
+  const PER_ROW = 5;
+  const rows = [];
+  for (let i = 0; i < phaseSteps.length; i += PER_ROW) {
+    rows.push(phaseSteps.slice(i, i + PER_ROW));
+  }
+
+  let globalDelay = 0;
+
+  rows.forEach((row, rowIdx) => {
+    const reversed = rowIdx % 2 === 1;
+    const displayRow = reversed ? [...row].reverse() : row;
+    const dir = reversed ? 'left' : 'right';
+
+    const rowDiv = document.createElement('div');
+    rowDiv.className = 'flow-row';
+    rowDiv.style.gap = '0';
+
+    displayRow.forEach((step, cardIdx) => {
+      const node = document.createElement('div');
+      node.className = 'step-node';
+      node.style.transitionDelay = `${globalDelay * 80}ms`;
+      globalDelay++;
+
+      node.innerHTML = `
+        <button class="step-card" style="--accent-color:${accent}" onclick="openDrawer(${step.id})">
+          <div class="card-header">
+            <div class="card-num" style="background:${accent}">${String(step.id).padStart(2,'0')}</div>
+            <div class="card-title">${step.title}</div>
+          </div>
+          <div class="card-resp">
+            <div class="card-resp-icon" style="background:${accent}">${personSvg}</div>
+            <div class="card-resp-name">${step.resp}</div>
+          </div>
+        </button>`;
+
+      rowDiv.appendChild(node);
+
+      if (cardIdx < displayRow.length - 1) {
+        const arrowEl = document.createElement('div');
+        arrowEl.className = 'arrow-h';
+        arrowEl.innerHTML = arrowSvg(dir);
+        rowDiv.appendChild(arrowEl);
+      }
+    });
+
+    container.appendChild(rowDiv);
+
+    // Turn connector between rows
+    if (rowIdx < rows.length - 1) {
+      const turn = document.createElement('div');
+      turn.className = `row-turn ${reversed ? 'turn-left' : 'turn-right'}`;
+      container.appendChild(turn);
+    }
+  });
+}
+
+renderFlow(STEPS.filter(s => s.phase === 'interna'), 'flow-interna', '#1a56db');
+renderFlow(STEPS.filter(s => s.phase === 'externa'), 'flow-externa', '#059669');
+
+// Intersection Observer for entrance animation
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.querySelectorAll('.step-node').forEach(n => n.classList.add('visible'));
+    }
+  });
+}, { threshold: 0.05 });
+document.querySelectorAll('.phase-body').forEach(el => observer.observe(el));
+
+// Also trigger for elements already in view
+setTimeout(() => {
+  document.querySelectorAll('.step-node').forEach(n => n.classList.add('visible'));
+}, 100);
+
+// Drawer
+function openDrawer(id) {
+  const step = STEPS.find(s => s.id === id);
+  const isExterna = step.phase === 'externa';
+  const accent = isExterna ? '#059669' : '#1a56db';
+  const headClass = isExterna ? 'green' : 'blue';
+
+  document.getElementById('d-tag').textContent = `Etapa ${step.id}`;
+  document.getElementById('d-title').textContent = step.title;
+  document.getElementById('d-resp').textContent = step.resp;
+  document.getElementById('d-desc').textContent = step.desc;
+
+  const top = document.getElementById('drawer-top');
+  top.className = `drawer-top ${headClass}`;
+  document.getElementById('d-resp-card').style.setProperty('--accent-color', accent);
+  document.getElementById('d-desc-section').style.setProperty('--accent-color', accent);
+
+  document.getElementById('drawer').classList.add('open');
+  document.getElementById('overlay').classList.add('show');
+}
+
+function closeDrawer() {
+  document.getElementById('drawer').classList.remove('open');
+  document.getElementById('overlay').classList.remove('show');
+}
+</script>
+</body>
+</html>

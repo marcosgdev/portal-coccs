@@ -38,6 +38,7 @@
       <ul>
         <li><a href="#sobre">A Coordenadoria</a></li>
         <li><a href="#bi">BI &amp; Sistema</a></li>
+        <li><a href="#parcerias">Parcerias</a></li>
         <li><a href="#modulos">Áreas de atuação</a></li>
         <li><a href="#mapeamento">Mapeamento</a></li>
         <li><a href="#checklist">Checklist</a></li>
@@ -135,9 +136,80 @@
     </div>
   </section>
 
-  <section id="modulos">
+  <section id="parcerias">
     <div class="container">
       <div class="section-head" data-num="§ 03">
+        <span class="eyebrow">Monitoramento</span>
+        <h2>Parcerias e Convênios em Andamento</h2>
+        <p>Monitoramento das etapas processuais das parcerias do Tribunal de Justiça do Estado do Pará.</p>
+      </div>
+
+      <div class="parcerias-sync">
+        <span id="parcerias-sync-status" class="parcerias-sync-pill">Carregando…</span>
+        <button type="button" id="parcerias-atualizar">↻ Atualizar</button>
+      </div>
+
+      <div class="stats-grid parcerias-kpis" id="parcerias-kpis" aria-live="polite"></div>
+
+      <div class="parcerias-filtros">
+        <div class="campo campo-busca">
+          <label for="parcerias-busca">Pesquisa</label>
+          <input type="search" id="parcerias-busca" placeholder="Objeto, partes, processo…">
+        </div>
+        <div class="campo">
+          <label for="parcerias-f-demandante">Demandante</label>
+          <select id="parcerias-f-demandante"></select>
+        </div>
+        <div class="campo">
+          <label for="parcerias-f-status">Etapa</label>
+          <select id="parcerias-f-status"></select>
+        </div>
+        <div class="campo">
+          <label for="parcerias-f-tipo">Tipo</label>
+          <select id="parcerias-f-tipo"></select>
+        </div>
+        <div class="campo">
+          <label for="parcerias-f-instr">Instrumento</label>
+          <select id="parcerias-f-instr"></select>
+        </div>
+      </div>
+      <button type="button" id="parcerias-limpar" class="parcerias-limpar" hidden>✕ Limpar filtros</button>
+
+      <div class="parcerias-grafico-card">
+        <h3>Processos por demandante &times; etapa</h3>
+        <p class="parcerias-grafico-sub" id="parcerias-grafico-sub"></p>
+        <div class="parcerias-legenda" id="parcerias-legenda"></div>
+        <div class="parcerias-grafico" id="parcerias-grafico" role="img" aria-label="Gráfico de barras empilhadas: processos por demandante e etapa"></div>
+      </div>
+
+      <div class="parcerias-tabela-card">
+        <div class="parcerias-tabela-topo">
+          <span id="parcerias-contagem">Processos</span>
+          <button type="button" id="parcerias-exportar">Exportar planilha (CSV) ↓</button>
+        </div>
+        <div class="parcerias-tabela-scroll">
+          <table class="parcerias-tabela">
+            <thead>
+              <tr>
+                <th scope="col">Nº</th>
+                <th scope="col">Recebido</th>
+                <th scope="col">Objeto</th>
+                <th scope="col">Demandante</th>
+                <th scope="col">Etapa</th>
+                <th scope="col">Tipo</th>
+              </tr>
+            </thead>
+            <tbody id="parcerias-tbody"></tbody>
+          </table>
+        </div>
+        <p class="parcerias-tabela-nota" id="parcerias-nota" hidden></p>
+      </div>
+    </div>
+  </section>
+
+  <section id="modulos">
+    <div class="container">
+      <div class="section-head" data-num="§ 04">
         <span class="eyebrow">Áreas de trabalho</span>
         <h2>Três frentes, um mesmo objetivo</h2>
         <p>Os módulos abaixo organizam o trabalho da Coordenadoria e são o ponto de partida para quem precisa entender, instruir ou acompanhar uma contratação.</p>
@@ -173,7 +245,7 @@
 
   <section class="alt" id="mapeamento">
     <div class="container">
-      <div class="section-head" data-num="§ 04">
+      <div class="section-head" data-num="§ 05">
         <span class="eyebrow">Mapeamento dos processos</span>
         <h2>Do pedido ao instrumento assinado</h2>
         <p>Visão geral simplificada do fluxo de uma contratação — cada etapa concentra orientações e responsáveis específicos.</p>
@@ -210,7 +282,7 @@
 
   <section id="checklist">
     <div class="container">
-      <div class="section-head" data-num="§ 05">
+      <div class="section-head" data-num="§ 06">
         <span class="eyebrow">Checklist</span>
         <h2>Checklists por modalidade</h2>
         <p>Listas de verificação em .docx, prontas para preenchimento, organizadas por tipo de instrumento e etapa do processo.</p>
@@ -295,7 +367,7 @@
 
   <section class="alt" id="normativos">
     <div class="container">
-      <div class="section-head" data-num="§ 06">
+      <div class="section-head" data-num="§ 07">
         <span class="eyebrow">Normativos</span>
         <h2>Legislação e atos normativos aplicáveis</h2>
         <p>Referências normativas que orientam o planejamento e a execução das contratações do Tribunal.</p>
@@ -331,7 +403,7 @@
 
   <section id="orientacao">
     <div class="container">
-      <div class="section-head" data-num="§ 07">
+      <div class="section-head" data-num="§ 08">
         <span class="eyebrow">Orientação técnica &amp; guias</span>
         <h2>Materiais de apoio para o dia a dia</h2>
         <p>Conteúdos preparados pela Coordenadoria para orientar as unidades demandantes e a equipe técnica.</p>
@@ -357,7 +429,7 @@
 
   <section class="alt" id="aniversariantes">
     <div class="container">
-      <div class="section-head" data-num="§ 08">
+      <div class="section-head" data-num="§ 09">
         <span class="eyebrow">Equipe</span>
         <h2>Aniversariantes da Coordenadoria</h2>
         <p>Selecione um mês para ver quem da equipe comemora aniversário — e aproveite para parabenizar.</p>
@@ -395,6 +467,7 @@
         <ul>
           <li><a href="#sobre">A Coordenadoria</a></li>
           <li><a href="#bi">BI &amp; Sistema</a></li>
+          <li><a href="#parcerias">Parcerias</a></li>
           <li><a href="#mapeamento">Mapeamento</a></li>
           <li><a href="#checklist">Checklist</a></li>
         </ul>
@@ -416,6 +489,8 @@
   </div>
 </footer>
 
+<script src="assets/js/parcerias-data.js"></script>
+<script src="assets/js/parcerias.js"></script>
 <script src="script.js"></script>
 </body>
 </html>

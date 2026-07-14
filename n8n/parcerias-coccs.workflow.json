@@ -1,0 +1,89 @@
+{
+  "name": "Parcerias COCCS - painel diário",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "GET",
+        "path": "parcerias-coccs",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "webhook",
+      "name": "Webhook (GET /parcerias-coccs)",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [-140, 0],
+      "webhookId": "parcerias-coccs"
+    },
+    {
+      "parameters": {
+        "resource": "table",
+        "operation": "getRows",
+        "workbook": {
+          "__rlValue": "",
+          "mode": "list",
+          "value": ""
+        },
+        "worksheet": {
+          "__rlValue": "",
+          "mode": "list",
+          "value": ""
+        },
+        "table": {
+          "__rlValue": "",
+          "mode": "list",
+          "value": ""
+        },
+        "options": {}
+      },
+      "id": "read-excel",
+      "name": "Ler planilha (SharePoint/OneDrive)",
+      "type": "n8n-nodes-base.microsoftExcel",
+      "typeVersion": 2,
+      "position": [100, 0],
+      "notes": "Selecione a credencial Microsoft, o Workbook 'Parcerias em andamento', o Worksheet 'Dados' e a Table com os dados.",
+      "credentials": {
+        "microsoftExcelOAuth2Api": {
+          "id": "",
+          "name": "Microsoft Excel account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "// Normaliza as linhas da planilha para o formato que o painel (assets/js/parcerias-data.js) espera.\n\nconst STATUS_GRUPO = {\n  '01': 'Planejamento', '02': 'Planejamento',\n  '03': 'Diligência', '04': 'Diligência', '05': 'Diligência',\n  '06': 'Parecer/Autorização', '07': 'Parecer/Autorização', '08': 'Parecer/Autorização',\n  '09': 'Assinatura', '10': 'Assinatura', '11': 'Assinatura', '12': 'Assinatura',\n  '13': 'Finalizado'\n};\n\nfunction grupoFromStatus(status) {\n  if (!status) return 'Sem informação';\n  const m = String(status).trim().match(/^(\\d{2})/);\n  return (m && STATUS_GRUPO[m[1]]) || 'Sem informação';\n}\n\nfunction toBool(v) {\n  if (typeof v === 'boolean') return v;\n  const s = String(v || '').trim().toLowerCase();\n  return s === 'sim' || s === 'true' || s === '1' || s === 'x' || s === 'urgente';\n}\n\nfunction pick(obj, keys) {\n  for (const k of keys) {\n    if (obj[k] !== undefined && obj[k] !== null && obj[k] !== '') return obj[k];\n  }\n  return null;\n}\n\nfunction excelDateToStr(v) {\n  if (v === null || v === undefined || v === '') return null;\n  if (typeof v === 'number') {\n    const ms = Math.round((v - 25569) * 86400 * 1000);\n    const d = new Date(ms);\n    const dd = String(d.getUTCDate()).padStart(2, '0');\n    const mm = String(d.getUTCMonth() + 1).padStart(2, '0');\n    const yyyy = d.getUTCFullYear();\n    return dd + '/' + mm + '/' + yyyy;\n  }\n  return String(v);\n}\n\nfunction pickAndamento(obj) {\n  for (const k of Object.keys(obj)) {\n    if (/manifesta/i.test(k) && obj[k]) return obj[k];\n  }\n  return pick(obj, ['Andamento', 'andamento']) || '';\n}\n\nreturn items.map((item) => {\n  const r = item.json;\n  const status = pick(r, ['Status', 'status', 'Etapa', 'etapa']) || '';\n  const grupo = pick(r, ['Grupo', 'grupo']) || grupoFromStatus(status);\n  const ordemRaw = pick(r, ['Ordem Numérica', 'Ordem', 'ordem', 'Nº', 'N°', 'Numero']);\n\n  return {\n    json: {\n      ordem: ordemRaw != null && ordemRaw !== '' ? Number(ordemRaw) : null,\n      dataRec: excelDateToStr(pick(r, ['Data recebimento da demanda na COCCS', 'Data Rec.', 'Data Recebimento', 'dataRec', 'Data'])),\n      processo: pick(r, ['N° Processo Administrativo', 'Nº Processo Administrativo', 'Processo', 'processo']) || '',\n      objeto: pick(r, ['Objeto', 'objeto']) || '',\n      partes: pick(r, ['Partes', 'partes']) || '',\n      demandante: pick(r, ['Demandante', 'demandante']) || 'Sem informação',\n      status: status || 'Sem informação',\n      grupo: grupo,\n      urgente: toBool(pick(r, ['Urgência', 'urgência', 'Urgente', 'urgente'])),\n      tipo: pick(r, ['Tipo', 'tipo']) || 'Sem informação',\n      tipoInstr: pick(r, ['Tipo de instrumento', 'Tipo de Instrumento', 'Tipo Instrumento', 'tipoInstr', 'Instrumento']) || 'Sem informação',\n      andamento: pickAndamento(r)\n    }\n  };\n});"
+      },
+      "id": "transformar",
+      "name": "Normalizar colunas",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [340, 0]
+    },
+    {
+      "parameters": {
+        "respondWith": "allIncomingItems",
+        "options": {}
+      },
+      "id": "responder",
+      "name": "Responder com JSON",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [580, 0]
+    }
+  ],
+  "connections": {
+    "Webhook (GET /parcerias-coccs)": {
+      "main": [[{ "node": "Ler planilha (SharePoint/OneDrive)", "type": "main", "index": 0 }]]
+    },
+    "Ler planilha (SharePoint/OneDrive)": {
+      "main": [[{ "node": "Normalizar colunas", "type": "main", "index": 0 }]]
+    },
+    "Normalizar colunas": {
+      "main": [[{ "node": "Responder com JSON", "type": "main", "index": 0 }]]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

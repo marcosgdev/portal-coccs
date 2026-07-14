@@ -33,7 +33,10 @@
       <img src="assets/brasao.png" alt="Brasão do Tribunal de Justiça do Estado do Pará — Poder Judiciário, Tribunal de Justiça do Estado do Pará">
       <img src="assets/logo-sead.png" alt="Logo da Secretaria de Administração do Tribunal de Justiça do Estado do Pará">
     </a>
-    <button class="menu-toggle" id="menu-toggle" aria-expanded="false" aria-controls="menu-principal">☰ Menu</button>
+    <button class="menu-toggle" id="menu-toggle" aria-expanded="false" aria-controls="menu-principal" aria-label="Abrir menu de navegação">
+      <span class="menu-toggle-barras" aria-hidden="true"><span></span><span></span><span></span></span>
+      <span>Menu</span>
+    </button>
     <nav class="menu" id="menu-principal" aria-label="Navegação principal">
       <ul>
         <li><a href="#sobre">A Coordenadoria</a></li>
@@ -56,7 +59,7 @@
     <div class="hero-bg" aria-hidden="true"></div>
     <div class="container">
       <div class="hero-texto">
-        <span class="eyebrow">Coordenadoria de Planejamento e Gestão de Contratações e Convênios · TJPA</span>
+        <p class="eyebrow">Coordenadoria de Planejamento e Gestão de Contratações e Convênios <span class="eyebrow-sep">·</span> TJPA</p>
         <h1>Organizar hoje a contratação que o Judiciário paraense vai precisar amanhã.</h1>
         <p class="lead">Reunimos em um só lugar o mapeamento dos processos, checklists, indicadores e normativos que orientam quem planeja, instrui e conduz contratações e convênios no Tribunal de Justiça do Estado do Pará.</p>
         <div class="hero-cta">
@@ -182,6 +185,17 @@
         <div class="parcerias-grafico" id="parcerias-grafico" role="img" aria-label="Gráfico de barras empilhadas: processos por demandante e etapa"></div>
       </div>
 
+      <div class="parcerias-grafico-card">
+        <h3>Distribuição por instrumento &times; demandante</h3>
+        <p class="parcerias-grafico-sub" id="parcerias-matriz-sub"></p>
+        <div class="parcerias-matriz-legenda" aria-hidden="true">
+          <span>Menos processos</span>
+          <span class="parcerias-matriz-escala"></span>
+          <span>Mais processos</span>
+        </div>
+        <div class="parcerias-matriz" id="parcerias-matriz" role="img" aria-label="Matriz de calor: quantidade de processos por tipo de instrumento e demandante"></div>
+      </div>
+
       <div class="parcerias-tabela-card">
         <div class="parcerias-tabela-topo">
           <span id="parcerias-contagem">Processos</span>
@@ -288,6 +302,7 @@
         <p>Listas de verificação em .docx, prontas para preenchimento, organizadas por tipo de instrumento e etapa do processo.</p>
       </div>
 
+      <h3 class="titulo-grupo">Ajustes Contratuais</h3>
       <div class="checklist-docs">
         <div class="checklist-docs-grid">
 
@@ -362,6 +377,98 @@
 
         </div>
       </div>
+
+      <h3 class="titulo-grupo">Formalização de Instrumentos</h3>
+      <div class="checklist-docs">
+        <div class="checklist-docs-grid">
+
+          <div class="doc-card">
+            <div class="doc-icone">📄</div>
+            <h4>Inexigibilidade — 1ª etapa</h4>
+            <div class="doc-etapas"><a href="assets/checklists/inexigibilidade-1-etapa.docx" download>Baixar ↓</a></div>
+          </div>
+
+          <div class="doc-card">
+            <div class="doc-icone">📄</div>
+            <h4>ARP — 2ª etapa (após a homologação)</h4>
+            <div class="doc-etapas"><a href="assets/checklists/arp-2-etapa-apos-homologacao.docx" download>Baixar ↓</a></div>
+          </div>
+
+          <div class="doc-card">
+            <div class="doc-icone">📄</div>
+            <h4>ARP Oriunda de Dispensa de Licitação</h4>
+            <div class="doc-etapas"><a href="assets/checklists/arp-oriunda-dispensa-licitacao.docx" download>Baixar ↓</a></div>
+          </div>
+
+          <div class="doc-card">
+            <div class="doc-icone">📄</div>
+            <h4>ARP Oriunda de Inexigibilidade de Licitação</h4>
+            <div class="doc-etapas"><a href="assets/checklists/arp-oriunda-inexigibilidade-licitacao.docx" download>Baixar ↓</a></div>
+          </div>
+
+          <div class="doc-card">
+            <div class="doc-icone">📄</div>
+            <h4>Contrato Oriundo de Licitação — 2ª etapa (após a homologação)</h4>
+            <div class="doc-etapas"><a href="assets/checklists/contrato-oriundo-licitacao-2-etapa-apos-homologacao.docx" download>Baixar ↓</a></div>
+          </div>
+
+          <div class="doc-card">
+            <div class="doc-icone">📄</div>
+            <h4>Contrato Oriundo de ARP — 2ª etapa (após a homologação)</h4>
+            <div class="doc-etapas"><a href="assets/checklists/contrato-oriundo-arp-2-etapa-apos-homologacao.docx" download>Baixar ↓</a></div>
+          </div>
+
+          <div class="doc-card">
+            <div class="doc-icone">📄</div>
+            <h4>Contrato Oriundo de Dispensa de Licitação — 2ª etapa (após a autorização)</h4>
+            <div class="doc-etapas"><a href="assets/checklists/contrato-oriundo-dispensa-licitacao-2-etapa-apos-autorizacao.docx" download>Baixar ↓</a></div>
+          </div>
+
+          <div class="doc-card">
+            <div class="doc-icone">📄</div>
+            <h4>Contrato Oriundo de Inexigibilidade de Licitação — 2ª etapa</h4>
+            <div class="doc-etapas"><a href="assets/checklists/contrato-oriundo-inexigibilidade-licitacao-2-etapa.docx" download>Baixar ↓</a></div>
+          </div>
+
+          <div class="doc-card">
+            <div class="doc-icone">📄</div>
+            <h4>Contrato de Aluguel Oriundo de Inexigibilidade de Licitação</h4>
+            <div class="doc-etapas"><a href="assets/checklists/contrato-aluguel-oriundo-inexigibilidade-licitacao.docx" download>Baixar ↓</a></div>
+          </div>
+
+          <div class="doc-card">
+            <div class="doc-icone">📄</div>
+            <h4>Doação — 2ª etapa (após a autorização)</h4>
+            <div class="doc-etapas"><a href="assets/checklists/doacao-2-etapa-apos-autorizacao.docx" download>Baixar ↓</a></div>
+          </div>
+
+          <div class="doc-card">
+            <div class="doc-icone">📄</div>
+            <h4>Cessão Onerosa de Espaço Público</h4>
+            <div class="doc-etapas"><a href="assets/checklists/cessao-onerosa-espaco-publico.docx" download>Baixar ↓</a></div>
+          </div>
+
+          <div class="doc-card">
+            <div class="doc-icone">📄</div>
+            <h4>Acordo de Cooperação Técnica sem Repasse — 2ª etapa (após a autorização)</h4>
+            <div class="doc-etapas"><a href="assets/checklists/act-sem-repasse-2-etapa-apos-autorizacao.docx" download>Baixar ↓</a></div>
+          </div>
+
+        </div>
+      </div>
+
+      <h3 class="titulo-grupo">Licitação</h3>
+      <div class="checklist-docs">
+        <div class="checklist-docs-grid">
+
+          <div class="doc-card">
+            <div class="doc-icone">📄</div>
+            <h4>Checklist Preparatório de Seleção de Fornecedor (IN nº 002/2024)</h4>
+            <div class="doc-etapas"><a href="assets/checklists/checklist-preparatoria-selecao-fornecedor-in-2024-2025.xlsx" download>Baixar ↓</a></div>
+          </div>
+
+        </div>
+      </div>
     </div>
   </section>
 
@@ -378,26 +485,95 @@
           <a class="link-externo" href="https://www.planalto.gov.br/ccivil_03/_ato2019-2022/2021/lei/l14133.htm" target="_blank" rel="noopener">Ver página ↗</a>
         </div>
         <div class="normativo-item">
-          <div><span class="tipo">Ato normativo TJPA</span><div class="nome">Regulamento interno de contratações e convênios</div></div>
-          <a class="link-externo" href="https://www.tjpa.jus.br/PortalExterno/institucional/Secretaria-de-Administracao/410268-apresentacao-missao.xhtml" target="_blank" rel="noopener">Ver página ↗</a>
-        </div>
-        <div class="normativo-item">
-          <div><span class="tipo">Instrução normativa</span><div class="nome">Pesquisa de preços e formação de preço de referência</div></div>
+          <div><span class="tipo">Instrução normativa federal</span><div class="nome">IN SEGES/ME nº 65/2021 — Pesquisa de preços para aquisição de bens e contratação de serviços</div></div>
           <a class="link-externo" href="https://www.gov.br/compras/pt-br/acesso-a-informacao/legislacao/instrucoes-normativas/instrucao-normativa-seges-me-no-65-de-7-de-julho-de-2021" target="_blank" rel="noopener">Ver página ↗</a>
         </div>
-        <div class="normativo-item">
-          <div><span class="tipo">Instruções normativas</span><div class="nome">Instruções Normativas organizadas por ano de publicação</div></div>
-          <a class="link-externo" href="https://www.tjpa.jus.br/PortalExterno/institucional/Secretaria-de-Administracao/1102297-instrucoes-normativas-cpl.xhtml" target="_blank" rel="noopener">Ver página ↗</a>
-        </div>
-        <div class="normativo-item">
-          <div><span class="tipo">Resoluções</span><div class="nome">Resoluções organizadas por ano de publicação</div></div>
-          <a class="link-externo" href="https://www.tjpa.jus.br/PortalExterno/institucional/Secretaria-de-Administracao/409269-resolucoes.xhtml" target="_blank" rel="noopener">Ver página ↗</a>
-        </div>
-        <div class="normativo-item">
-          <div><span class="tipo">Portarias</span><div class="nome">Portarias organizadas por ano de publicação</div></div>
-          <a class="link-externo" href="https://www.tjpa.jus.br/PortalExterno/institucional/Secretaria-de-Administracao/409268-normativos.xhtml" target="_blank" rel="noopener">Ver página ↗</a>
-        </div>
       </div>
+
+      <h3 class="titulo-grupo">Instruções Normativas, Portarias e Resoluções</h3>
+      <div class="normativos-busca">
+        <div class="normativos-busca-campo">
+          <svg class="normativos-busca-icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          <label for="normativos-pesquisa" class="sr-only">Pesquisar por número, ano ou assunto</label>
+          <input type="search" id="normativos-pesquisa" placeholder="Pesquisar por número, ano ou assunto…">
+        </div>
+        <span class="normativos-busca-contagem" id="normativos-contagem"></span>
+      </div>
+      <ul class="normativos-lista-busca" id="normativos-lista-busca">
+        <li data-texto="in nº 001/2023 planejamento das contratações instrução normativa">
+          <span class="tipo">IN nº 001/2023</span><span class="nome">Planejamento das Contratações</span>
+          <a href="assets/normativos/in-001-2023-planejamento-contratacoes.pdf" target="_blank" rel="noopener">Abrir PDF ↗</a>
+        </li>
+        <li data-texto="in nº 001/2024 instrumentos de parceria instrução normativa">
+          <span class="tipo">IN nº 001/2024</span><span class="nome">Instrumentos de Parceria</span>
+          <a href="assets/normativos/in-001-2024-instrumentos-parceria.pdf" target="_blank" rel="noopener">Abrir PDF ↗</a>
+        </li>
+        <li data-texto="in nº 002/2024 seleção de fornecedor instrução normativa">
+          <span class="tipo">IN nº 002/2024</span><span class="nome">Seleção de Fornecedor</span>
+          <a href="assets/normativos/in-002-2024-selecao-fornecedor.pdf" target="_blank" rel="noopener">Abrir PDF ↗</a>
+        </li>
+        <li data-texto="in nº 003/2024 processo sancionatório instrução normativa">
+          <span class="tipo">IN nº 003/2024</span><span class="nome">Processo Sancionatório</span>
+          <a href="assets/normativos/in-003-2024-processo-sancionatorio.pdf" target="_blank" rel="noopener">Abrir PDF ↗</a>
+        </li>
+        <li data-texto="portaria nº 013/2023 atribuições da assejur">
+          <span class="tipo">Portaria nº 013/2023</span><span class="nome">Atribuições da ASSEJUR</span>
+          <a href="assets/normativos/portaria-013-2023-atribuicoes-assejur.pdf" target="_blank" rel="noopener">Abrir PDF ↗</a>
+        </li>
+        <li data-texto="portaria nº 014/2023 pjr">
+          <span class="tipo">Portaria nº 014/2023</span><span class="nome">PJR</span>
+          <a href="assets/normativos/portaria-014-2023-pjr.pdf" target="_blank" rel="noopener">Abrir PDF ↗</a>
+        </li>
+        <li data-texto="portaria nº 015/2023 orientação normativa">
+          <span class="tipo">Portaria nº 015/2023</span><span class="nome">Orientação Normativa</span>
+          <a href="assets/normativos/portaria-015-2023-orientacao-normativa.pdf" target="_blank" rel="noopener">Abrir PDF ↗</a>
+        </li>
+        <li data-texto="portaria nº 016/2023 padronização de minutas de instrumentos">
+          <span class="tipo">Portaria nº 016/2023</span><span class="nome">Padronização de Minutas de Instrumentos</span>
+          <a href="assets/normativos/portaria-016-2023-padronizacao-minutas.pdf" target="_blank" rel="noopener">Abrir PDF ↗</a>
+        </li>
+        <li data-texto="portaria nº 234/2025 ajustes em contratações e acordos prazos de pagamento conta vinculada">
+          <span class="tipo">Portaria nº 234/2025</span><span class="nome">Ajustes em Contratações e Acordos — prazos de pagamento e conta vinculada</span>
+          <a href="assets/normativos/portaria-234-2025-ajustes-contratacoes-acordos.pdf" target="_blank" rel="noopener">Abrir PDF ↗</a>
+        </li>
+        <li data-texto="portaria nº 513/2025 mulheres em situação de vulnerabilidade">
+          <span class="tipo">Portaria nº 513/2025</span><span class="nome">Mulheres em Situação de Vulnerabilidade</span>
+          <a href="assets/normativos/portaria-513-2025-mulheres-vulneraveis.pdf" target="_blank" rel="noopener">Abrir PDF ↗</a>
+        </li>
+        <li data-texto="portaria nº 517/2025 pessoas egressas do sistema prisional">
+          <span class="tipo">Portaria nº 517/2025</span><span class="nome">Pessoas Egressas do Sistema Prisional</span>
+          <a href="assets/normativos/portaria-517-2025-egressos.pdf" target="_blank" rel="noopener">Abrir PDF ↗</a>
+        </li>
+        <li data-texto="portaria nº 684/2020 gestão e fiscalização de contratos lei nº 8.666/93">
+          <span class="tipo">Portaria nº 684/2020</span><span class="nome">Gestão e Fiscalização de Contratos (Lei nº 8.666/93)</span>
+          <a href="assets/normativos/portaria-684-2020-gestao-fiscalizacao.pdf" target="_blank" rel="noopener">Abrir PDF ↗</a>
+        </li>
+        <li data-texto="portaria nº 685/2020 contratação de tic">
+          <span class="tipo">Portaria nº 685/2020</span><span class="nome">Contratação de TIC</span>
+          <a href="assets/normativos/portaria-685-2020-contratacao-tic.pdf" target="_blank" rel="noopener">Abrir PDF ↗</a>
+        </li>
+        <li data-texto="portaria nº 1.802/2025 núcleo de planejamento">
+          <span class="tipo">Portaria nº 1.802/2025</span><span class="nome">Núcleo de Planejamento</span>
+          <a href="assets/normativos/portaria-1802-2025-nucleo-planejamento.pdf" target="_blank" rel="noopener">Abrir PDF ↗</a>
+        </li>
+        <li data-texto="portaria nº 3.615/2021 formalização de aditivos lei nº 8.666/93">
+          <span class="tipo">Portaria nº 3.615/2021</span><span class="nome">Formalização de Aditivos (Lei nº 8.666/93)</span>
+          <a href="assets/normativos/portaria-3615-2021-formalizacao-aditivos.pdf" target="_blank" rel="noopener">Abrir PDF ↗</a>
+        </li>
+        <li data-texto="resolução nº 019/2022 governança das contratações">
+          <span class="tipo">Resolução nº 019/2022</span><span class="nome">Governança das Contratações</span>
+          <a href="assets/normativos/resolucao-019-2022-governanca-contratacoes.pdf" target="_blank" rel="noopener">Abrir PDF ↗</a>
+        </li>
+        <li data-texto="resolução cnj nº 468/2022 tic">
+          <span class="tipo">Resolução CNJ nº 468/2022</span><span class="nome">TIC</span>
+          <a href="assets/normativos/resolucao-468-2022-cnj-tic.pdf" target="_blank" rel="noopener">Abrir PDF ↗</a>
+        </li>
+        <li data-texto="resolução cnj nº 652/2025 obras e serviços de engenharia">
+          <span class="tipo">Resolução CNJ nº 652/2025</span><span class="nome">Obras e Serviços de Engenharia</span>
+          <a href="assets/normativos/resolucao-652-2025-cnj-obras-engenharia.pdf" target="_blank" rel="noopener">Abrir PDF ↗</a>
+        </li>
+      </ul>
+      <p class="normativos-vazio" id="normativos-vazio" hidden>Nenhum normativo encontrado para esta pesquisa.</p>
     </div>
   </section>
 
@@ -413,6 +589,7 @@
           <h3 style="font-size:1rem; color:var(--azul); margin-bottom:12px;">Orientação técnica</h3>
           <ul class="lista-recursos">
             <li><a class="recurso-link" href="assets/orientacoes/orientacao-tecnica-001-2024-ccc.pdf" target="_blank" rel="noopener"><span class="marcador">→</span><div><strong>Orientação Técnica nº 001/2024/CCC ↗</strong><span>Procedimentos e diretrizes para elaboração de Nota Técnica de alterações contratuais — reajuste, repactuação e revisão (29/07/2024).</span></div></a></li>
+            <li><a class="recurso-link" href="assets/orientacoes/orientacao-tecnica-002-2024-ccc.pdf" target="_blank" rel="noopener"><span class="marcador">→</span><div><strong>Orientação Técnica nº 002/2024/CCC ↗</strong><span>Procedimentos e diretrizes para publicação de Contratos, Atas de Registro de Preços, Inexigibilidades, Instrumentos de Parcerias e seus aditivos, com modelos de extrato (18/12/2024).</span></div></a></li>
           </ul>
         </div>
         <div>

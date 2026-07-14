@@ -25,6 +25,8 @@
   var graficoSub = document.getElementById('parcerias-grafico-sub');
   var legendaEl = document.getElementById('parcerias-legenda');
   var graficoEl = document.getElementById('parcerias-grafico');
+  var matrizSub = document.getElementById('parcerias-matriz-sub');
+  var matrizEl = document.getElementById('parcerias-matriz');
   var exportarBtn = document.getElementById('parcerias-exportar');
 
   function escapeHtml(texto) {
@@ -190,6 +192,81 @@
     }).join('');
   }
 
+  var MATRIZ_TOP_DEMANDANTES = 6;
+  var MATRIZ_TOP_INSTRUMENTOS = 8;
+
+  function renderMatriz(filtered) {
+    if (!filtered.length) {
+      matrizSub.textContent = '';
+      matrizEl.innerHTML = '<p style="color:var(--tinta-suave); font-size:0.88rem;">Nenhum processo para exibir com os filtros atuais.</p>';
+      return;
+    }
+
+    var totalPorInstr = {};
+    filtered.forEach(function (r) {
+      var i = r.tipoInstr || 'Sem informação';
+      totalPorInstr[i] = (totalPorInstr[i] || 0) + 1;
+    });
+    var instrumentos = Object.keys(totalPorInstr)
+      .sort(function (a, b) { return totalPorInstr[b] - totalPorInstr[a]; })
+      .slice(0, MATRIZ_TOP_INSTRUMENTOS);
+
+    var totalPorDemandante = {};
+    filtered.forEach(function (r) {
+      var d = r.demandante || 'Sem informação';
+      totalPorDemandante[d] = (totalPorDemandante[d] || 0) + 1;
+    });
+    var demandantesOrdenados = Object.keys(totalPorDemandante)
+      .sort(function (a, b) { return totalPorDemandante[b] - totalPorDemandante[a]; });
+    var demandantesTop = demandantesOrdenados.slice(0, MATRIZ_TOP_DEMANDANTES);
+    var temOutros = demandantesOrdenados.length > MATRIZ_TOP_DEMANDANTES;
+    var colunas = demandantesTop.concat(temOutros ? ['Outros'] : []);
+
+    matrizSub.textContent = filtered.length + ' processos no filtro atual · top ' + instrumentos.length + ' instrumentos × top ' + demandantesTop.length + ' demandantes';
+
+    var celulas = {};
+    instrumentos.forEach(function (i) {
+      celulas[i] = {};
+      colunas.forEach(function (c) { celulas[i][c] = 0; });
+    });
+    var instrumentosSet = {};
+    instrumentos.forEach(function (i) { instrumentosSet[i] = true; });
+    filtered.forEach(function (r) {
+      var i = r.tipoInstr || 'Sem informação';
+      if (!instrumentosSet[i]) return;
+      var d = r.demandante || 'Sem informação';
+      var col = demandantesTop.indexOf(d) !== -1 ? d : (temOutros ? 'Outros' : null);
+      if (col === null) return;
+      celulas[i][col] += 1;
+    });
+
+    var maxCel = 0;
+    instrumentos.forEach(function (i) {
+      colunas.forEach(function (c) { if (celulas[i][c] > maxCel) maxCel = celulas[i][c]; });
+    });
+
+    var theadHtml = '<tr><th scope="col">Instrumento</th>' +
+      colunas.map(function (c) { return '<th scope="col">' + escapeHtml(c) + '</th>'; }).join('') +
+      '<th scope="col">Total</th></tr>';
+
+    var linhasHtml = instrumentos.map(function (i) {
+      var celsHtml = colunas.map(function (c) {
+        var v = celulas[i][c];
+        var alpha = maxCel ? (0.1 + (v / maxCel) * 0.75) : 0;
+        var fundo = v ? 'rgba(31,78,121,' + alpha.toFixed(2) + ')' : 'transparent';
+        var corTexto = v && alpha > 0.5 ? '#fff' : 'inherit';
+        var rotulo = escapeHtml(i) + ' — ' + escapeHtml(c) + ': ' + v + (v === 1 ? ' processo' : ' processos');
+        return '<td class="parcerias-matriz-cel" style="background:' + fundo + '; color:' + corTexto + '"' +
+          (v ? ' data-tooltip="' + rotulo + '" tabindex="0"' : '') + '>' + (v || '') + '</td>';
+      }).join('');
+      return '<tr><th scope="row">' + escapeHtml(i) + '</th>' + celsHtml +
+        '<td class="parcerias-matriz-total">' + totalPorInstr[i] + '</td></tr>';
+    }).join('');
+
+    matrizEl.innerHTML = '<div class="parcerias-tabela-scroll"><table class="parcerias-matriz-tabela">' +
+      '<thead>' + theadHtml + '</thead><tbody>' + linhasHtml + '</tbody></table></div>';
+  }
+
   function renderTabela(filtered) {
     contagemEl.textContent = filtered.length + (filtered.length === 1 ? ' processo' : ' processos');
 
@@ -218,6 +295,7 @@
     var filtered = getFiltered();
     renderKpis(filtered);
     renderGrafico(filtered);
+    renderMatriz(filtered);
     renderTabela(filtered);
     var temFiltro = state.search || state.demandante || state.status || state.tipo || state.instr;
     limparBtn.hidden = !temFiltro;

@@ -37,11 +37,62 @@
   });
   var menuToggle = document.getElementById('menu-toggle');
   var menu = document.getElementById('menu-principal');
+  var headerPrincipal = document.querySelector('header.principal');
+
+  function fecharMenu(){
+    menu.classList.remove('aberto');
+    menuToggle.setAttribute('aria-expanded', 'false');
+    menuToggle.setAttribute('aria-label', 'Abrir menu de navegação');
+  }
+  function abrirMenu(){
+    menu.classList.add('aberto');
+    menuToggle.setAttribute('aria-expanded', 'true');
+    menuToggle.setAttribute('aria-label', 'Fechar menu de navegação');
+  }
   menuToggle.addEventListener('click', function(){
-    var aberto = menu.style.display === 'block';
-    menu.style.display = aberto ? 'none' : 'block';
-    menuToggle.setAttribute('aria-expanded', String(!aberto));
+    if (menu.classList.contains('aberto')) fecharMenu(); else abrirMenu();
   });
+  menu.addEventListener('click', function(e){
+    if (e.target.tagName === 'A') fecharMenu();
+  });
+  document.addEventListener('click', function(e){
+    if (menu.classList.contains('aberto') && !menu.contains(e.target) && !menuToggle.contains(e.target)) {
+      fecharMenu();
+    }
+  });
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape' && menu.classList.contains('aberto')) {
+      fecharMenu();
+      menuToggle.focus();
+    }
+  });
+
+  // Header encolhe ao rolar, pra dar mais destaque de conteúdo e reforçar a navegação fixa.
+  if (headerPrincipal){
+    var aplicarEncolhido = function(){
+      headerPrincipal.classList.toggle('encolhido', window.scrollY > 40);
+    };
+    aplicarEncolhido();
+    window.addEventListener('scroll', aplicarEncolhido, { passive: true });
+  }
+
+  // Scroll-spy: destaca no menu o item da seção atualmente visível.
+  var linksMenu = Array.prototype.slice.call(menu.querySelectorAll('a[href^="#"]'));
+  var secoesMenu = linksMenu
+    .map(function(a){ return document.querySelector(a.getAttribute('href')); })
+    .filter(Boolean);
+  if ('IntersectionObserver' in window && secoesMenu.length){
+    var observerMenu = new IntersectionObserver(function(entradas){
+      entradas.forEach(function(entrada){
+        if (!entrada.isIntersecting) return;
+        var link = menu.querySelector('a[href="#' + entrada.target.id + '"]');
+        if (!link) return;
+        linksMenu.forEach(function(l){ l.classList.remove('ativo'); });
+        link.classList.add('ativo');
+      });
+    }, { rootMargin: '-40% 0px -55% 0px', threshold: 0 });
+    secoesMenu.forEach(function(s){ observerMenu.observe(s); });
+  }
 
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var heroSection = document.querySelector('.hero');
@@ -65,6 +116,28 @@
       }
     }, { passive: true });
   }
+})();
+
+(function(){
+  var busca = document.getElementById('normativos-pesquisa');
+  var lista = document.getElementById('normativos-lista-busca');
+  var vazio = document.getElementById('normativos-vazio');
+  var contagem = document.getElementById('normativos-contagem');
+  if (!busca || !lista) return;
+  var itens = Array.prototype.slice.call(lista.querySelectorAll('li'));
+  function atualizar(){
+    var q = busca.value.trim().toLowerCase();
+    var visiveis = 0;
+    itens.forEach(function(li){
+      var ok = !q || (li.getAttribute('data-texto') || '').indexOf(q) !== -1;
+      li.hidden = !ok;
+      if (ok) visiveis++;
+    });
+    if (vazio) vazio.hidden = visiveis !== 0;
+    if (contagem) contagem.textContent = visiveis + (visiveis === 1 ? ' normativo' : ' normativos');
+  }
+  busca.addEventListener('input', atualizar);
+  atualizar();
 })();
 
 (function(){

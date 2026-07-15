@@ -195,7 +195,15 @@
     { nome:"Vladimila Pereira Machado", email:"vladimila.machado@tjpa.jus.br", dia:27, mes:10 },
     { nome:"Amanda Caroline Pinheiro dos Santos", email:"amanda.pinheiro@tjpa.jus.br", dia:3, mes:11 },
     { nome:"Sidalia Souza do Amaral", email:"sidalia.amaral@tjpa.jus.br", dia:21, mes:11 },
-    { nome:"Daniele Dias Marques", email:"daniele.marques@tjpa.jus.br", dia:5, mes:12 }
+    { nome:"Daniele Dias Marques", email:"daniele.marques@tjpa.jus.br", dia:5, mes:12 },
+    { nome:"Carolina Nogueira Costa", email:"carolina.costa@tjpa.jus.br", dia:7, mes:12 },
+    { nome:"Almir Alessandro Marinho Pinheiro", email:"almir.pinheiro@tjpa.jus.br", dia:22, mes:1 },
+    { nome:"Ely Pinheiro de Sousa", email:"ely.sousa@tjpa.jus.br", dia:8, mes:6 },
+    { nome:"Maria José Campelo Costa", email:"maria.campelo@tjpa.jus.br", dia:6, mes:5 },
+    { nome:"Antônio Birajara Alves da Silva", email:"alves.silva@tjpa.jus.br", dia:25, mes:1 },
+    { nome:"Afonso Teixeira Noura Neto", email:"afonso.teixeira@tjpa.jus.br", dia:27, mes:6 },
+    { nome:"Elielza Carneiro do Nascimento Maués", email:"elielza.maues@tjpa.jus.br", dia:21, mes:6 },
+    { nome:"Lucas Prestes Rocha", email:"lucas.procha@tjpa.jus.br", dia:8, mes:6 }
   ];
   var meses = ["janeiro","fevereiro","março","abril","maio","junho","julho","agosto","setembro","outubro","novembro","dezembro"];
   var grid = document.getElementById('aniversarios-grid');

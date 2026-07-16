@@ -40,7 +40,7 @@
     <nav class="menu" id="menu-principal" aria-label="Navegação principal">
       <ul>
         <li><a href="#sobre">A Coordenadoria</a></li>
-        <li><a href="#bi">BI &amp; Sistema</a></li>
+        <li><a href="#bi">Indicadores</a></li>
         <li><a href="#parcerias">Parcerias</a></li>
         <li><a href="#modulos">Áreas de atuação</a></li>
         <li><a href="#mapeamento">Mapeamento</a></li>
@@ -64,7 +64,7 @@
         <p class="lead">Reunimos em um só lugar o mapeamento dos processos, checklists, indicadores e normativos que orientam quem planeja, instrui e conduz contratações e convênios no Tribunal de Justiça do Estado do Pará.</p>
         <div class="hero-cta">
           <a href="#mapeamento" class="btn btn-dourado">Ver mapeamento dos processos</a>
-          <a href="#bi" class="btn btn-outline">Acessar o painel (BI)</a>
+          <a href="#bi" class="btn btn-outline">Acessar o painel de contratos</a>
         </div>
       </div>
       <div class="hero-visual">
@@ -97,21 +97,105 @@
   <section class="alt" id="bi">
     <div class="container">
       <div class="section-head" data-num="§ 02">
-        <span class="eyebrow">BI &amp; Sistema</span>
+        <span class="eyebrow">Indicadores</span>
         <h2>Indicadores de acompanhamento</h2>
-        <p>Painel com o andamento dos processos de contratação e convênios em tramitação nas unidades do Tribunal.</p>
+        <p>Painel de vigência dos convênios, acordos de cooperação e demais instrumentos já formalizados pelo Tribunal, com destaque para os prazos de vencimento.</p>
       </div>
-      <div class="bi-painel">
-        <div class="bi-painel-topo">
-          <div>
-            <h3>Contratos, fiscais e convênios</h3>
-            <p>Painel mantido pela equipe de TI/BI da Coordenadoria — atualizado periodicamente.</p>
-          </div>
-          <a class="link-externo" href="https://app.powerbi.com/view?r=eyJrIjoiODA1Njg5NGEtNDk5My00YmE3LTlmMGQtOTA1YmUwODNmOGU0IiwidCI6IjVmNmZkMTFlLWNkZjUtNDVhNS05MzM4LWI1MDFkY2VmZWFiNSJ9" target="_blank" rel="noopener">Tela cheia ↗</a>
+      <div class="parcerias-sync">
+        <span id="convenios-sync-status" class="parcerias-sync-pill">Carregando…</span>
+        <button type="button" id="convenios-atualizar">↻ Atualizar</button>
+      </div>
+
+      <div class="stats-grid parcerias-kpis" id="convenios-kpis" aria-live="polite"></div>
+
+      <div class="parcerias-filtros">
+        <div class="campo campo-busca">
+          <label for="convenios-busca">Pesquisa</label>
+          <input type="search" id="convenios-busca" placeholder="Instrumento, credor, objeto, gestor…">
         </div>
-        <div class="bi-embed">
-          <iframe src="https://app.powerbi.com/view?r=eyJrIjoiODA1Njg5NGEtNDk5My00YmE3LTlmMGQtOTA1YmUwODNmOGU0IiwidCI6IjVmNmZkMTFlLWNkZjUtNDVhNS05MzM4LWI1MDFkY2VmZWFiNSJ9" title="Painel de indicadores da Coordenadoria (Power BI)" loading="lazy" allowfullscreen></iframe>
+        <div class="campo">
+          <label for="convenios-f-setor">Setor demandante</label>
+          <select id="convenios-f-setor"></select>
         </div>
+        <div class="campo">
+          <label for="convenios-f-categoria">Tipo de instrumento</label>
+          <select id="convenios-f-categoria"></select>
+        </div>
+        <div class="campo">
+          <label for="convenios-f-natureza">Natureza</label>
+          <select id="convenios-f-natureza"></select>
+        </div>
+        <div class="campo">
+          <label for="convenios-f-prazo">Prazo restante</label>
+          <select id="convenios-f-prazo">
+            <option value="">Todos os prazos</option>
+            <option value="≤30">Até 30 dias</option>
+            <option value="31–60">31 a 60 dias</option>
+            <option value="61–90">61 a 90 dias</option>
+            <option value="91–150">91 a 150 dias</option>
+            <option value=">150">Mais de 150 dias</option>
+            <option value="sem_data">Sem data de término</option>
+          </select>
+        </div>
+      </div>
+      <button type="button" id="convenios-limpar" class="parcerias-limpar" hidden>✕ Limpar filtros</button>
+
+      <div class="parcerias-grafico-card">
+        <h3>Prazo restante até o vencimento</h3>
+        <p class="parcerias-grafico-sub" id="convenios-prazo-sub"></p>
+        <div class="parcerias-legenda" id="convenios-prazo-legenda"></div>
+        <div class="parcerias-grafico" id="convenios-prazo-grafico" role="img" aria-label="Gráfico de barras: instrumentos por prazo restante até o vencimento"></div>
+      </div>
+
+      <div class="duas-colunas">
+        <div class="parcerias-grafico-card">
+          <h3>Setor demandante</h3>
+          <p class="parcerias-grafico-sub" id="convenios-setor-sub"></p>
+          <div class="parcerias-grafico" id="convenios-setor-grafico" role="img" aria-label="Gráfico de barras: instrumentos por setor demandante"></div>
+        </div>
+        <div class="parcerias-grafico-card">
+          <h3>Tipo de instrumento</h3>
+          <p class="parcerias-grafico-sub" id="convenios-categoria-sub"></p>
+          <div class="parcerias-grafico" id="convenios-categoria-grafico" role="img" aria-label="Gráfico de barras: instrumentos por tipo"></div>
+        </div>
+      </div>
+
+      <div class="duas-colunas">
+        <div class="parcerias-grafico-card">
+          <h3>Natureza da contratação</h3>
+          <p class="parcerias-grafico-sub" id="convenios-natureza-sub"></p>
+          <div class="parcerias-grafico" id="convenios-natureza-grafico" role="img" aria-label="Gráfico de barras: instrumentos por natureza"></div>
+        </div>
+        <div class="parcerias-grafico-card">
+          <h3>Próximos vencimentos por trimestre</h3>
+          <p class="parcerias-grafico-sub" id="convenios-trimestre-sub"></p>
+          <div class="parcerias-grafico" id="convenios-trimestre-grafico" role="img" aria-label="Gráfico de barras: instrumentos por trimestre de vencimento"></div>
+        </div>
+      </div>
+
+      <div class="parcerias-tabela-card">
+        <div class="parcerias-tabela-topo">
+          <span id="convenios-contagem">Instrumentos</span>
+          <button type="button" id="convenios-exportar">Exportar planilha (CSV) ↓</button>
+        </div>
+        <div class="parcerias-tabela-scroll">
+          <table class="parcerias-tabela convenios-tabela">
+            <thead>
+              <tr>
+                <th scope="col" data-key="numero">Instrumento</th>
+                <th scope="col" data-key="credor">Credor</th>
+                <th scope="col">Objeto</th>
+                <th scope="col" data-key="setor_demandante">Setor</th>
+                <th scope="col" data-key="tipo_instrumento">Tipo</th>
+                <th scope="col" data-key="termino">Término</th>
+                <th scope="col" data-key="restante_dias">Restam</th>
+                <th scope="col" data-key="fiscal_tecnico">Fiscal</th>
+              </tr>
+            </thead>
+            <tbody id="convenios-tbody"></tbody>
+          </table>
+        </div>
+        <p class="parcerias-tabela-nota" id="convenios-nota" hidden></p>
       </div>
     </div>
   </section>
@@ -226,8 +310,8 @@
           <div class="icone">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20V10M12 20V4M20 20v-7"/></svg>
           </div>
-          <h3>BI e sistema (Dashboard)</h3>
-          <p>Indicadores de andamento, prazos e volume de processos em tramitação por unidade.</p>
+          <h3>Indicadores de contratos (Dashboard)</h3>
+          <p>Painel de vigência dos contratos, com prazos de vencimento, valores e situação por unidade demandante.</p>
           <a class="saiba" href="#bi">Acessar painel →</a>
         </div>
       </div>
@@ -582,6 +666,23 @@
         </li>
       </ul>
       <p class="normativos-vazio" id="normativos-vazio" hidden>Nenhum normativo encontrado para esta pesquisa.</p>
+
+      <h3 class="titulo-grupo">Pareceres Jurídicos Referenciais e Orientações Normativas — AJSEADM</h3>
+      <p class="titulo-grupo-desc">Manifestações da Assessoria Jurídica da Secretaria de Administração que padronizam a análise de casos repetitivos.</p>
+      <div class="normativos-lista">
+        <div class="normativo-item">
+          <div><span class="tipo">Orientação Normativa nº 001/2024</span><div class="nome">Contrato de remanescente após rescisão de contratos regidos pela Lei nº 8.666/93</div></div>
+          <a class="link-externo" href="assets/normativos/orientacao-normativa-001-2024-contrato-remanescente.pdf" target="_blank" rel="noopener">Abrir PDF ↗</a>
+        </div>
+        <div class="normativo-item">
+          <div><span class="tipo">PJR nº 001/2025 — AJSEADM</span><div class="nome">Doação de bens declarados inservíveis pelo Tribunal de Justiça</div></div>
+          <a class="link-externo" href="assets/normativos/pjr-001-2025-doacao-bens-inserviveis.pdf" target="_blank" rel="noopener">Abrir PDF ↗</a>
+        </div>
+        <div class="normativo-item">
+          <div><span class="tipo">PJR nº 001/2026 — AJSEADM</span><div class="nome">Celebração de parcerias sem repasse de recursos financeiros (Acordos de Cooperação Técnica)</div></div>
+          <a class="link-externo" href="assets/normativos/pjr-001-2026-parcerias-sem-repasse-recurso.pdf" target="_blank" rel="noopener">Abrir PDF ↗</a>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -651,7 +752,7 @@
         <h4>Navegação</h4>
         <ul>
           <li><a href="#sobre">A Coordenadoria</a></li>
-          <li><a href="#bi">BI &amp; Sistema</a></li>
+          <li><a href="#bi">Indicadores</a></li>
           <li><a href="#parcerias">Parcerias</a></li>
           <li><a href="#mapeamento">Mapeamento</a></li>
           <li><a href="#checklist">Checklist</a></li>
@@ -676,6 +777,8 @@
 
 <script src="assets/js/parcerias-data.js"></script>
 <script src="assets/js/parcerias.js"></script>
+<script src="assets/js/convenios-data.js"></script>
+<script src="assets/js/convenios.js"></script>
 <script src="script.js"></script>
 </body>
 </html>

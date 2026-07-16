@@ -362,26 +362,8 @@
   }
   @media (max-width: 880px){ .sobre-grid{ grid-template-columns: 1fr; } }
 
-  /* ---------- BI embed ---------- */
-  .bi-painel{
-    border-radius: var(--raio); overflow:hidden;
-    background: var(--vidro-bg-forte); border:1px solid var(--vidro-borda);
-    backdrop-filter: var(--vidro-blur); -webkit-backdrop-filter: var(--vidro-blur);
-    box-shadow: var(--vidro-sombra);
-  }
-  .bi-painel-topo{
-    display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;
-    padding: 18px 24px; border-bottom:1px solid var(--vidro-borda);
-  }
-  .bi-painel-topo h3{ font-size:1rem; color: var(--azul-principal); margin-bottom:2px; }
-  .bi-painel-topo p{ color: var(--tinta-suave); font-size:0.88rem; margin:0; }
-  .bi-painel-topo .link-externo{
-    display:inline-flex; align-items:center; gap:6px; color: var(--azul); text-decoration:none; font-weight:600;
-    border-bottom: 1px solid var(--dourado); padding-bottom:2px; font-size:0.9rem; white-space:nowrap;
-  }
-  .bi-embed{ height:760px; background:#fff; }
-  .bi-embed iframe{ width:100%; height:100%; border:0; display:block; }
-  @media (max-width: 640px){ .bi-embed{ height:600px; } }
+  .convenios-tabela th[data-key]{ cursor:pointer; }
+  .convenios-tabela th[data-key]:hover{ color: var(--azul-principal); }
 
   /* ---------- Módulos de trabalho ---------- */
   .modulos-grid{ display:grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; }
@@ -586,11 +568,11 @@
   .parcerias-sync-pill[data-status="live"]{ background: rgba(19,168,102,0.14); color:#0f7a4a; border-color: rgba(19,168,102,0.3); }
   .parcerias-sync-pill[data-status="loading"]{ background: rgba(237,161,0,0.14); color:#8a5c00; border-color: rgba(237,161,0,0.3); }
   .parcerias-sync-pill[data-status="error"]{ background: rgba(208,59,59,0.12); color:#a32d2d; border-color: rgba(208,59,59,0.28); }
-  #parcerias-atualizar{
+  #parcerias-atualizar, #convenios-atualizar{
     display:inline-flex; align-items:center; gap:6px; font-size:0.82rem; font-weight:600; color: var(--azul-principal);
     background:none; border:1px solid var(--linha); border-radius: calc(var(--raio) * 0.5); padding:6px 12px; cursor:pointer;
   }
-  #parcerias-atualizar:hover{ border-color: var(--azul-principal); }
+  #parcerias-atualizar:hover, #convenios-atualizar:hover{ border-color: var(--azul-principal); }
   .parcerias-kpis{ margin-bottom: 26px; }
   .parcerias-kpis .stat-item{ overflow:visible; }
   .kpi-info-wrap{ position:absolute; top:12px; right:12px; }
@@ -718,11 +700,11 @@
   }
   .parcerias-tabela-topo{ display:flex; align-items:center; justify-content:space-between; gap:14px; flex-wrap:wrap; margin-bottom:14px; }
   .parcerias-tabela-topo span{ font-family: var(--font-mono); font-size:0.78rem; letter-spacing:0.05em; text-transform:uppercase; color: var(--tinta-suave); }
-  #parcerias-exportar{
+  #parcerias-exportar, #convenios-exportar{
     display:inline-flex; align-items:center; gap:6px; font-size:0.84rem; font-weight:600; color: var(--azul-principal);
     background: var(--papel); border:1px solid var(--linha); border-radius: calc(var(--raio) * 0.5); padding:8px 14px; cursor:pointer;
   }
-  #parcerias-exportar:hover{ border-color: var(--azul-principal); }
+  #parcerias-exportar:hover, #convenios-exportar:hover{ border-color: var(--azul-principal); }
   .parcerias-tabela-scroll{ overflow-x:auto; }
   .parcerias-tabela{ width:100%; border-collapse:collapse; font-size:0.86rem; }
   .parcerias-tabela th{
@@ -750,7 +732,6 @@
   html[data-contraste="alto"] .normativo-item,
   html[data-contraste="alto"] .aniversario-card,
   html[data-contraste="alto"] .stat-item,
-  html[data-contraste="alto"] .bi-painel,
   html[data-contraste="alto"] .mes-tab,
   html[data-contraste="alto"] .parcerias-filtros,
   html[data-contraste="alto"] .parcerias-grafico-card,
@@ -764,7 +745,7 @@
   }
   @media (prefers-reduced-transparency: reduce){
     header.principal, .card-info, .modulo, .fluxo-etapa, .doc-card,
-    .normativo-item, .aniversario-card, .stat-item, .bi-painel, .mes-tab,
+    .normativo-item, .aniversario-card, .stat-item, .mes-tab,
     .parcerias-filtros, .parcerias-grafico-card, .parcerias-tabela-card,
     nav.menu, .menu-toggle, .normativos-lista-busca, .normativos-busca{
       background: var(--papel) !important; backdrop-filter:none !important; -webkit-backdrop-filter:none !important;
